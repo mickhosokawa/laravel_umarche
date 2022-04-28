@@ -1,13 +1,4 @@
-<!-- 
-    {{ $slot }}の部分に "コンポーネントテスト1"
-    <body>
-        <div class="font-sans text-gray-900 antialiased">
-            {{ $slot }}
-        </div>
-    </body>
--->
-
-
 <x-tests.app>
+    <x-slot name="header">ヘッダー1</x-slot>
 コンポーネントテスト1
 </x-tests.app>
