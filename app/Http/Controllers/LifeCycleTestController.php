@@ -7,6 +7,19 @@ use Illuminate\Http\Request;
 class LifeCycleTestController extends Controller
 {
     //
+    public function showServiceProviderTest()
+    {
+        $encrypt = app()->make('encrypter');
+        // $passwordの暗号化
+        $password = $encrypt->encrypt('password');
+        // サービスプロバイダを取得
+        $sample = app()->make('serviceProviderTest');
+
+
+        // decryptで暗号化解除
+        dd($sample, $password, $encrypt->decrypt($password));
+    }
+
     public function showServiceContainerTest()
     {
         app()->bind('lifeCycleTest', function(){
