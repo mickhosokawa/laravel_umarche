@@ -14,7 +14,8 @@ return [
     | any other location as required by the application or its packages.
     |
     */
-
+    // ヘルパ関数env
+    // 第一引数が空欄の場合は、第2引数がアプリ名となる
     'name' => env('APP_NAME', 'Laravel'),
 
     /*
