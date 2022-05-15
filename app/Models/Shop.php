@@ -10,6 +10,15 @@ class Shop extends Model
 {
     use HasFactory;
 
+    // shopテーブルの内容
+    protected $fillable = [
+        'owner_id',
+        'name',
+        'information',
+        'filename',
+        'is_selling'
+    ];
+
     public function owner()
     {
         // Ownerモデルと紐づいているか
