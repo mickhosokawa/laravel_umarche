@@ -41,7 +41,7 @@ class shopController extends Controller
         $ownerId = Auth::id();
 
         // shopモデルでオーナーIDを検索
-        $shops = Shop::where('owner_id', $ownerId)->get();
+        $shops = Shop::where('owner_id', Auth::id())->get();
 
         // 
         return view('owner.shop.index', 
