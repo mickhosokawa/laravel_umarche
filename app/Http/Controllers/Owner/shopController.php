@@ -8,6 +8,7 @@ use InterventionImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\UploadImageRequest;
 
 class shopController extends Controller
 {
@@ -58,8 +59,10 @@ class shopController extends Controller
 
         // dd(Shop::findOrFail($id));
     }
-
-    public function update(Request $request, $id)
+    /**
+     * UploadImageRequestを利用
+     */
+    public function update(UploadImageRequest $request, $id)
     {
         // 画像ファイルをアップロードする
         $imageFile = $request->image;

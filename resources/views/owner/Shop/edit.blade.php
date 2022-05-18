@@ -10,6 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     {{-- ルート情報にショップIDを渡している。また"enctypeは画像を送信するために必要なおまじない --}}
+                    <x-auth-validation-errors class="mb-4" :errors="$errors" />
                     <form method='POST' action="{{ route('owner.shops.update', ['shop'=>$shop->id]) }}" enctype="multipart/form-data" >
                         @csrf
                         <div class="-m-2">
