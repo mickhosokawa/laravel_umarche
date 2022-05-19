@@ -9,6 +9,7 @@ use App\Http\Controllers\Owner\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Owner\Auth\RegisteredUserController;
 use App\Http\Controllers\Owner\Auth\VerifyEmailController;
 use App\Http\Controllers\Owner\ShopController;
+use App\Http\Controllers\Owner\ImageController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('owner.welcome');
 });
+
+Route::resource('images', ImageController::class)
+    ->middleware('auth:owners')
+    ->except(['show']);
 
 Route::prefix('shops')
     ->middleware('auth:owners')
