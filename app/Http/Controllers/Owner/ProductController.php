@@ -4,9 +4,33 @@ namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Image;
+use App\Models\Product;
+use App\Models\SecondaryCategory;
+use App\Models\Owner;
+
 
 class ProductController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:owners');
+        
+        // ログインしているユーザ以外が違うショップにログインするのを防ぐ処理
+        $this->middleware(function($request, $next){ 
+            $id = $request->route()->parameter('product'); 
+            if(!is_null($id)){ 
+            $productOwnerId = Product::findOrFail($id)->shop->owner->id;
+                $productId = (int)$productOwnerId; 
+                if($productId !== Auth::id()){ 
+                    abort(404);
+                } 
+            } 
+            return $next($request); 
+        });
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +38,23 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        // ログインしているオーナーのプロダクトを表示する
+        // 取得したオーナーID→shopモデル→プロダクトを特定する
+        //$products = Owner::findOrFail(Auth::id())->shop->product;
+
+       $ownerInfo = Owner::with('shop.product.imageFirst')->where('id', Auth::id())->get();
+
+        //dd($ownerInfo);
+        // foreach($ownerInfo as $owner){
+        //     // dd($owner->shop->product);
+        //     foreach($owner->shop->product as $product){
+        //         dd($product->imageFirst->filename);
+        //     }
+        // }
+
+        // オーナーのプロダクトを表示する
+        return view('owner.products.index', compact('ownerInfo'));
+
     }
 
     /**
