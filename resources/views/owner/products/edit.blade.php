@@ -104,6 +104,13 @@
                       </div>
                     </div>
                   </form>
+                  <form id="delete_{{$product->id}}" method="POST" action="{{ route('owner.products.destroy', ['product' => $product->id]) }}">
+                    @csrf
+                    @method('delete')
+                    <div class="md:px-4 py-3">
+                        <a href="#" data-id="{{ $product->id }}" onclick="deletePost(this)" class="text-white bg-red-500 border-0 py-2 px-8 focus:outline-none hover:bg-red-600 rounded ">削除する</a>
+                    </div>
+                  </form> 
               </div>
           </div>
       </div>
@@ -125,6 +132,12 @@
     }, )
     })  
 
+  function deletePost(e) { 
+  'use strict'; 
+      if (confirm('本当に削除してもいいですか?')) { 
+      document.getElementById('delete_' + e.dataset.id).submit(); 
+      } 
+  } 
   </script>
 
 </x-app-layout>
