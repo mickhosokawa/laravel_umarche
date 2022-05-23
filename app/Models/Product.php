@@ -13,28 +13,42 @@ class Product extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'shop_id',
+        'name',
+        'information',
+        'price',
+        'is_selling',
+        'sort_order',
+        'secondary_category_id',
+        'image1',
+        'image2',
+        'image3',
+        'image4',
+    ];
+
     public function shop()
     {
-        // Ownerモデルと紐づいているか
         return $this->belongsTo(Shop::class);
     }
 
     public function category()
     {
-        // カテゴリモデルと紐づいているか
         return $this->belongsTo(SecondaryCategory::class, 'secondary_category_id');
     }
 
-    
-    // imageクラスとのリレーション
-    // image1というカラムがあるため、image1()のメソッドは作成できない
     public function imageFirst()
     {
-        // imageモデルとリレーション
         return $this->belongsTo(Image::class, 'image1', 'id');
     }
 
-    public function stock(){
+    public function stock()
+    {
         return $this->hasMany(Stock::class);
     }
+
+    
+
+
+
 }
