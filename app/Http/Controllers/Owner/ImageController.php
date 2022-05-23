@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Owner;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Image;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Product;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\UploadImageRequest;
 use App\Service\ImageService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
@@ -130,7 +131,37 @@ class ImageController extends Controller
     {
         // Strageの画像を削除する
         $image = Image::findOrFail($id);
+
+        $imageInProducts = Product::where('image1', $image->id)
+        ->orWhere('image2', $image->id)
+        ->orWhere('image3', $image->id)
+        ->orWhere('image4', $image->id)
+        ->get();
+
+        if($imageInProducts){
+            $imageInProducts->each(function($product) use($image){
+                if($product->image1 === $image->id){
+                    $product->image1 = null;
+                    $product->save();
+                }
+                if($product->image2 === $image->id){
+                    $product->image2 = null;
+                    $product->save();
+                }
+                if($product->image3 === $image->id){
+                    $product->image3 = null;
+                    $product->save();
+                }
+                if($product->image4 === $image->id){
+                    $product->image4 = null;
+                    $product->save();
+                }
+            });
+        }
+
         $filePath = 'public/products/' . $image->filename;
+
+        // 画像を消す前にプロダクトで使われているか確認する
 
         if(Storage::exists($filePath)){
             Storage::delete($filePath);
