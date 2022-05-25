@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Product;
+use App\Models\Stock;
 
 class ItemController extends Controller
 {
@@ -47,10 +48,17 @@ class ItemController extends Controller
 
         return view('user.index', compact('products'));
     }
+
     public function show($id)
     {
         $product = Product::findOrFail($id);
+        $quantity = Stock::where('product_id', $product->id)
+        ->sum('quantity');
 
-        return view('user.show', compact('product'));
+        if($quantity > 9){
+            $quantity = 9;
+        }
+
+        return view('user.show', compact('product', 'quantity'));
     }
 }
