@@ -17,7 +17,6 @@ class ItemController extends Controller
 
     public function index(){
 
-        // リレーションがないためエラーが出るコード
         // Eloquentでリレーションしたものはクエリビルダーで継承されない
         $stocks = DB::table('t_stocks')
         ->select('product_id', 
