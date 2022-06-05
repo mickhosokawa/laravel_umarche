@@ -7,8 +7,10 @@ use App\Models\Cart;
 use App\Models\User;
 use App\Models\Stock;
 use App\Services\CartService;
+use App\Jobs\SendThanksMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 
 class CartController extends Controller
 {
@@ -59,6 +61,10 @@ class CartController extends Controller
         ////
         $items = Cart::where('user_id', Auth::id())->get();
         $products = CartService::getItemsInCart($items);
+        $user = User::findOrFail(Auth::id());
+
+        SendThanksMail::dispatch($products, $user);
+        dd('aaaa');
 
         ////
 
