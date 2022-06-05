@@ -21,9 +21,7 @@ class CartController extends Controller
             $totalPrice += $product->price * $product->pivot->quantity;
         }
 
-        // dd($products, $totalPrice);
-
-        return view('user.cart.index', 
+        return view('user.cart', 
             compact('products', 'totalPrice'));
     }
 
@@ -86,12 +84,12 @@ class CartController extends Controller
                 'quantity' => $product->pivot->quantity * -1
             ]);
         }
-        dd('test');
+        //dd('test');
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
         
         $session = \Stripe\CheckOut\Session::create([
             'payment_method_types' => ["card"],
-            'line_items' =>[$lineItem],
+            'line_items' => [$lineItem],
             'mode' => 'payment',
             'success_url' => route('user.items.index'),
             'cancel_url' => route('user.cart.index'),
