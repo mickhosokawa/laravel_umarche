@@ -10,6 +10,7 @@ use App\Models\PrimaryCategory;
 use App\Models\Product;
 use App\Models\Stock;
 use App\Mail\TestMail;
+use App\Jobs\SendThanksMail;
 
 class ItemController extends Controller
 {
@@ -33,8 +34,12 @@ class ItemController extends Controller
     public function index(Request $request)
     {
         //dd($request);
+        // 同期的に送信
         Mail::to('mikiya.hosokawa0831@gmail.com')
         ->send(new TestMail());
+
+        // 非同期に送信
+        SendThanksMail::dispatch();
 
         $categories = PrimaryCategory::with('secondary')
         ->get();
