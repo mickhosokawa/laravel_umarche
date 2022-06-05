@@ -91,8 +91,8 @@ class CartController extends Controller
             'payment_method_types' => ["card"],
             'line_items' => [$lineItem],
             'mode' => 'payment',
-            'success_url' => route('user.cart.success'), //決済が完了したらcuccessメソッドにリダイレクトする
-            'cancel_url' => route('user.cart.index'),
+            'success_url' => route('user.cart.success'), // 決済が完了したらcuccessメソッドにリダイレクトする
+            'cancel_url' => route('user.cart.cancel'), // カートから削除したらcancelにリダイレクトする
         ]);
 
         $publicKey = env('STRIPE_PUBLIC_KEY');
@@ -106,5 +106,19 @@ class CartController extends Controller
         Cart::where('user_id', Auth::id())->delete();
 
         return redirect()->route('user.items.index');
+    }
+
+    // 購入がキャンセルされたら在庫を戻す
+    public function cancel()
+    {
+        $user = User::findOrFail(Auth::id());
+
+        foreach($user->products as $product){
+            Stock::create([
+                'product_id' => $product->id,
+                'type' => \Constant::PRODUCT_LIST['add'],
+                'quantity' => $product->pivot->quantity
+            ]);
+        }
     }
 }
