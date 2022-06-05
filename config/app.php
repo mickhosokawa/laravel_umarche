@@ -14,7 +14,8 @@ return [
     | any other location as required by the application or its packages.
     |
     */
-
+    // ヘルパ関数env
+    // 第一引数が空欄の場合は、第2引数がアプリ名となる
     'name' => env('APP_NAME', 'Laravel'),
 
     /*
@@ -69,7 +70,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Tokyo',
 
     /*
     |--------------------------------------------------------------------------
@@ -82,7 +83,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'ja',
 
     /*
     |--------------------------------------------------------------------------
@@ -108,7 +109,7 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+    'faker_locale' => 'ja_JP',
 
     /*
     |--------------------------------------------------------------------------
@@ -185,7 +186,7 @@ return [
         /*
          * Package Service Providers...
          */
-
+            Intervention\Image\ImageServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -194,6 +195,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\SampleServiceProvider::class //新しく追加
 
     ],
 
@@ -210,6 +212,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'InterventionImage' => Intervention\Image\Facades\Image::class,
+        'Constant' => App\Constants\Common::class
     ])->toArray(),
 
 ];
