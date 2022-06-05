@@ -91,12 +91,20 @@ class CartController extends Controller
             'payment_method_types' => ["card"],
             'line_items' => [$lineItem],
             'mode' => 'payment',
-            'success_url' => route('user.items.index'),
+            'success_url' => route('user.cart.success'), //決済が完了したらcuccessメソッドにリダイレクトする
             'cancel_url' => route('user.cart.index'),
         ]);
 
         $publicKey = env('STRIPE_PUBLIC_KEY');
 
         return view('user.checkout', compact('session', 'publicKey'));
+    }
+
+    // 購入が成功したらカートの中身を削除する
+    public function success()
+    {
+        Cart::where('user_id', Auth::id())->delete();
+
+        return redirect()->route('user.items.index');
     }
 }
